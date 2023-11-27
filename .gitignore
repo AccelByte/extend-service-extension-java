@@ -3,6 +3,27 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+.gradle
+build/
+target/
+tempo-data/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+gradle.properties
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
 # Node artifact files
 node_modules/
 dist/
@@ -25,6 +46,12 @@ dist/
 
 # JetBrains IDE
 .idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
 # Unit test reports
 TEST*.xml
@@ -48,3 +75,13 @@ Thumbs.db
 *.mov
 *.wmv
 
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### Other exclussion
+.env*
+.run
