@@ -80,5 +80,5 @@ Thumbs.db
 /.nb-gradle/
 
 ### Other exclussion
-.env*
+.env
 .run
