@@ -7,7 +7,7 @@ In this chapter, we will be adding new endpoints to our service. This involves t
 
 ## 6.1 Defining the Service in the `.proto` File
 
-gRPC services and messages are defined in `.proto` files. Our `.proto` file is located in `src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos`. Let's add new service methods to our `GuildService`:
+gRPC services and messages are defined in `.proto` files. Our `.proto` file is located in `src/main/proto/guildService.proto`. Let's add new service methods to our `GuildService`:
 
 ```protobuf
 service GuildService {
@@ -76,7 +76,6 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   };
   schemes: HTTP;
   schemes: HTTPS;
-  base_path: "/guild";
 
   security_definitions: {
     security: {
@@ -107,13 +106,10 @@ Permission control via `permission.proto`
 - `permission.action`: it can be either READ, CREATE, UPDATE, DELETE
 - `permission.resource`: Defines scope-based access control (e.g., ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD).
 
-After defining the service and methods in the `.proto` file, build the service project using `dotnet build` inside the service project directory. This will re-generate all grpc related models and service class. Then we run the protoc compiler to generate the corresponding grpc-gateway code.
 
-> gRPC Gateway tricky part: `base_path`. If `base_path` is set, note that it doesn't alter the paths generated in the Swagger file. Your actual API paths in `google.api.http` remain unchanged. If you're using `base_path`, you'll need to manually adjust the `BasePath` in the `gateway/pkg/common/config.go`. We will explain more about this in the following chapter.
+## 6.2 Generating gRPC Gateway Go and Java Code
 
-## 6.2 Generating gRPC Gateway Go Code
-
-After updating our .proto file, we need to generate Go code from it.
+After updating our .proto file, we need to generate Go and Java code from it.
 The protobuf compiler `protoc` is used to generate Go code from our .proto file. 
 However, in our setup, we've simplified this with a `Makefile`.
 

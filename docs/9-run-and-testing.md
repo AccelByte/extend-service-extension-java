@@ -54,6 +54,70 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 
 ```
 
-## Building, Running, and Testing
+## Building, Running, and Testing Locally
 
-Please see [README.md](../README.md).
+To build this sample app, use the following command.
+
+```
+make build
+```
+
+For more details about these commands, see [Makefile](Makefile).
+
+## Running
+
+To run the existing docker image of this sample app which has been built before, use the following command.
+
+```
+docker compose up
+```
+
+OR
+
+To build, create a docker image, and run this sample app in one go, use the following command.
+
+```
+docker compose up --build
+```
+
+## Testing
+
+After starting the service, you can test it to make sure it's working correctly.
+
+We will use curl command to test our service. For example, to test `CreateOrUpdateGuildProgress` endpoint, you can run:
+
+Be sure to use replace the `accessToken`, `namespace`. Since the endpoint require admin permission `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD`, ensure your accessToken has the admin permission.
+
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/guild/v1/admin/namespace/<your-namespace>/progress' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer <accessToken>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "guildProgress": {
+    "guildId": "123456789",
+    "namespace": "<your-namespace>",
+    "objectives": {
+      "target1": 0
+    }
+  }
+}'
+```
+
+And to test `GetGuildProgress` endpoint:
+
+```bash
+curl -X 'GET' \
+  'http://localhost:8000/guild/v1/admin/namespace/<your-namespace>/progress/123456789' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer <accessToken>'
+```
+
+You should see the updated guild progress in the response.
+
+Alternatively you can test using the swagger UI, by going to `http://localhost:8000/guild/apidocs/`
+
+![swagger-inteface](images/swagger-interface.png)
+
+

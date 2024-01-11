@@ -1,4 +1,4 @@
-# Extend Service Extension Sample App .NET (C#)
+# Extend Service Extension Sample App Java
 
 This repository contains a custom service that will be used as a sample for testing Extend Service Extension.
 
