@@ -14,7 +14,7 @@ To be able to run this sample app, you will need to follow these setup steps.
 - Fill in the required environment variables in `.env` file as shown below.
 
    ```txt
-   AB_BASE_URL=https://demo.accelbyte.io      # Base URL of AccelByte Gaming Services demo environment
+   AB_BASE_URL=https://test.accelbyte.io      # Base URL of AccelByte Gaming Services demo environment
    AB_CLIENT_ID='xxxxxxxxxx'                  # Use Client ID from the Setup section
    AB_CLIENT_SECRET='xxxxxxxxxx'              # Use Client Secret from the Setup section
    AB_NAMESPACE='xxxxxxxxxx'                  # Use Namespace ID from the Setup section
