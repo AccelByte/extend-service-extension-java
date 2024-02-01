@@ -14,11 +14,12 @@ To be able to run this sample app, you will need to follow these setup steps.
 - Fill in the required environment variables in `.env` file as shown below.
 
    ```txt
-   AB_BASE_URL=https://test.accelbyte.io      # Base URL of AccelByte Gaming Services demo environment
+   AB_BASE_URL='http://test.accelbyte.io'     # Your environment's domain Base URL
    AB_CLIENT_ID='xxxxxxxxxx'                  # Use Client ID from the Setup section
    AB_CLIENT_SECRET='xxxxxxxxxx'              # Use Client Secret from the Setup section
    AB_NAMESPACE='xxxxxxxxxx'                  # Use Namespace ID from the Setup section
    PLUGIN_GRPC_SERVER_AUTH_ENABLED=true       # Enable or disable access token and permission verification
+   BASE_PATH='/guild'                         # The base path used for the app
    ```
 
   > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'disable' will bypass the validation being set on the endpoint `permission.action` and `permission.resource` [creating-new-endpoint](6-creating-new-endpoint.md#6-creating-a-new-endpoint)
@@ -32,27 +33,10 @@ To be able to run this sample app, you will need to follow these setup steps.
 
 - (Optional) `grpc-gateway-dependencies` mentioned in [chapter 4](4-installation-and-setup.md) is up and running if you needed the observability stack
 
-## Change API base path
+## Change API base path (Optional)
 
-To change the base path you need to change the base path 2 places
+To change the base path you just need to define it in the envar `BASE_PATH`
 
-- in `gateway/pkg/common/config.go`, to be accurately this part
-```go
-BasePath    = "/guild"
-```
-
-- in `src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos/guildService.proto`
-```protobuf
-// OpenAPI options for the entire API.
-option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
-  // ...
-  
-  base_path: "/guild";
-  
-  // ...
-};
-
-```
 
 ## Building, Running, and Testing Locally
 

@@ -23,6 +23,7 @@ services:
       - OTEL_METRICS_EXPORTER=none
       - OTEL_SERVICE_NAME=ExtendServiceExtensionServerJava
       - OTEL_PROPAGATORS=b3multi
+      - BASE_PATH
       # - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006    # For debugging only
     extra_hosts:
       - host.docker.internal:host-gateway
