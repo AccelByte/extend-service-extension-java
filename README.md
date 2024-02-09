@@ -70,10 +70,10 @@ flow properly when the app is deployed.
    AB_CLIENT_ID='xxxxxxxxxx'                 # Client ID from the Prerequisites section
    AB_CLIENT_SECRET='xxxxxxxxxx'             # Client Secret from the Prerequisites section
    AB_NAMESPACE='xxxxxxxxxx'                 # Namespace ID from the Prerequisites section
-   PLUGIN_GRPC_SERVER_AUTH_ENABLED=true      # Enable or disable access token and permission verification
+   PLUGIN_GRPC_SERVER_AUTH_ENABLED=true      # Enable or disable access token and permission validation
    ```
 
-   > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If disabled, the gRPC server will bypass the validation being set on the endpoint `permission.action` and `permission.resource` (see [creating-new-endpoint](6-creating-new-endpoint.md#6-creating-a-new-endpoint))
+   > :info: **In this sample app, PLUGIN_GRPC_SERVER_AUTH_ENABLED is `true` by default**: If it is set to `false`, the endpoint `permission.action` and `permission.resource`  validation will be disabled and the endpoint can be accessed without a valid access token. This option is provided for development purpose only. For more information, see [creating-new-endpoint](docs/6-creating-new-endpoint.md#6-creating-a-new-endpoint).
 
 ## Building
 
@@ -97,13 +97,26 @@ docker compose up --build
 
 The custom function in this sample app can be tested locally using Swagger UI.
 
-1. Run this `Extend Service Extension` sample app by using the command below.
+1. If **PLUGIN_GRPC_SERVER_AUTH_ENABLED** is `true`, you'll need user's access token to access the REST API service. You can generate user's access token with [getusertoken.sh](getusertoken.sh) shell script.
+   To run it, you'll need to set these environment variables:
+   ```shell
+   $ export AB_BASE_URL='http://test.accelbyte.io'    # Your environment's domain Base URL
+   $ export AB_CLIENT_ID='xxxxxxxxxx'                 # Client ID from the Prerequisites section
+   $ export AB_CLIENT_SECRET='xxxxxxxxxx'             # Client Secret from the Prerequisites section
+   ```
+   Then run the script:
+   ```shell
+   # <username> and <password> is user's credential to access AGS.
+   $ ./getusertoken.sh <username> <password>
+   ```
+
+2. Run this `Extend Service Extension` sample app by using the command below.
 
    ```shell
    docker compose up --build
    ```
 
-2. After the `gRPC Server` is confirmed working, the REST API service can be tested by opening Swagger UI at `http://localhost:8000/guild/apidocs/`. Use this to create an API request for testing.
+3. After the `gRPC Server` is confirmed working, the REST API service can be tested by opening Swagger UI at `http://localhost:8000/guild/apidocs/`. Use this to create an API request for testing.
 
    ![swagger-inteface](./docs/images/swagger-interface.png)
 
