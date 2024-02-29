@@ -70,19 +70,3 @@ imagex_push:
 	docker buildx inspect $(BUILDER) || docker buildx create --name $(BUILDER) --use
 	docker buildx build -t ${IMAGE_PREFIX}${IMAGE_NAME}:${IMAGE_VERSION} --platform linux/arm64/v8,linux/amd64 --push .
 	docker buildx rm --keep-state $(BUILDER)
-
-
-#imagex:
-#	docker buildx inspect ${IMAGE_NAME}-builder \
-#			|| docker buildx create --name ${IMAGE_NAME}-builder --use
-#	docker buildx build -t ${IMAGE_NAME} --platform linux/arm64,linux/amd64 .
-#	docker buildx build -t ${IMAGE_NAME} --load .
-#	#docker buildx rm ${IMAGE_NAME}-builder
-#
-#imagex_push:
-#	@test -n "$(IMAGE_TAG)" || (echo "IMAGE_TAG is not set (e.g. 'v0.1.0', 'latest')"; exit 1)
-#	@test -n "$(REPO_URL)" || (echo "REPO_URL is not set"; exit 1)
-#	docker buildx inspect $(BUILDER) || docker buildx create --name $(BUILDER) --use
-#	docker buildx build -t ${REPO_URL}:${IMAGE_TAG} --platform linux/arm64,linux/amd64 --push .
-#	docker buildx rm --keep-state $(BUILDER)
-
