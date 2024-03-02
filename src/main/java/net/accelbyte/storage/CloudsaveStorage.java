@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import net.accelbyte.custom.guild.GuildProgress;
 import net.accelbyte.sdk.api.cloudsave.models.ModelsGameRecordRequest;
-import net.accelbyte.sdk.api.cloudsave.models.ModelsGameRecordResponse;
+import net.accelbyte.sdk.api.cloudsave.models.ModelsGameRecordAdminResponse;
 import net.accelbyte.sdk.api.cloudsave.operations.admin_game_record.AdminGetGameRecordHandlerV1;
 import net.accelbyte.sdk.api.cloudsave.operations.admin_game_record.AdminPostGameRecordHandlerV1;
 import net.accelbyte.sdk.api.cloudsave.wrappers.AdminGameRecord;
@@ -33,7 +33,7 @@ public class CloudsaveStorage implements Storage {
                 .namespace(namespace)
                 .key(key)
                 .build();
-        ModelsGameRecordResponse response = csStorage.adminGetGameRecordHandlerV1(input);
+        ModelsGameRecordAdminResponse response = csStorage.adminGetGameRecordHandlerV1(input);
         CloudSaveModel model = mapper.convertValue(response.getValue(), CloudSaveModel.class);
         return model.toGuildProgress();
     }
@@ -46,7 +46,7 @@ public class CloudsaveStorage implements Storage {
                 .key(key)
                 .body(cloudModel)
                 .build();
-        ModelsGameRecordResponse response = csStorage.adminPostGameRecordHandlerV1(input);
+        ModelsGameRecordAdminResponse response = csStorage.adminPostGameRecordHandlerV1(input);
         CloudSaveModel model = mapper.convertValue(response.getValue(), CloudSaveModel.class);
         return model.toGuildProgress();
     }
