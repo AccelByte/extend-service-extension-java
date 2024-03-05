@@ -31,6 +31,10 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+echo  "# Waiting until Extend app is up ..."
+
+sleep 60
+
 echo '# Testing Extend app using demo script'
 
 export SERVICE_BASE_URL=$APP_BASE_URL
