@@ -29,10 +29,6 @@ RUN go build -v -o /output/$TARGETOS/$TARGETARCH/grpc_gateway .
 FROM ibm-semeru-runtimes:open-17-jre
 ARG TARGETOS
 ARG TARGETARCH
-RUN apt-get update && \
-    apt-get install -y supervisor procps --no-install-recommends && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=grpc-server-builder /build/target/*.jar app.jar
 COPY jars/aws-opentelemetry-agent.jar aws-opentelemetry-agent.jar
@@ -40,8 +36,7 @@ COPY --from=grpc-gateway-builder /output/$TARGETOS/$TARGETARCH/grpc_gateway .
 COPY gateway/*.swagger.json apidocs/
 RUN rm -fv apidocs/permission.swagger.json
 COPY gateway/third_party third_party
-COPY supervisord.conf /etc/supervisor/supervisord.conf
-RUN chmod +x grpc_gateway
+COPY wrapper.sh .
 # gRPC gateway HTTP port, gRPC server port, Prometheus /metrics http port
 EXPOSE 8000 6565 8080
-ENTRYPOINT ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ./wrapper.sh
