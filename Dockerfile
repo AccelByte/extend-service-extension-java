@@ -37,6 +37,7 @@ COPY gateway/*.swagger.json apidocs/
 RUN rm -fv apidocs/permission.swagger.json
 COPY gateway/third_party third_party
 COPY wrapper.sh .
+RUN chmod +x wrapper.sh
 # gRPC gateway HTTP port, gRPC server port, Prometheus /metrics http port
 EXPOSE 8000 6565 8080
 CMD ./wrapper.sh
