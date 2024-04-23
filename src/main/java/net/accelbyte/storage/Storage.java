@@ -1,6 +1,6 @@
 package net.accelbyte.storage;
 
-import net.accelbyte.custom.guild.GuildProgress;
+import net.accelbyte.extend.serviceextension.GuildProgress;
 
 public interface Storage {
 

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-import net.accelbyte.custom.guild.GuildProgress;
+import net.accelbyte.extend.serviceextension.GuildProgress;
 import net.accelbyte.sdk.api.cloudsave.models.ModelsGameRecordRequest;
 import net.accelbyte.sdk.api.cloudsave.models.ModelsGameRecordAdminResponse;
 import net.accelbyte.sdk.api.cloudsave.operations.admin_game_record.AdminGetGameRecordHandlerV1;

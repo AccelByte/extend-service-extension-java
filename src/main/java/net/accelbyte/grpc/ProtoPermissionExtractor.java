@@ -2,8 +2,8 @@ package net.accelbyte.grpc;
 
 import com.google.protobuf.Descriptors;
 import lombok.extern.slf4j.Slf4j;
-import net.accelbyte.custom.guild.Action;
-import net.accelbyte.custom.guild.Permission;
+import net.accelbyte.extend.serviceextension.Action;
+import net.accelbyte.extend.serviceextension.Permission;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;

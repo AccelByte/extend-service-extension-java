@@ -2,7 +2,7 @@ package net.accelbyte.service;
 
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
-import net.accelbyte.custom.guild.*;
+import net.accelbyte.extend.serviceextension.*;
 import net.accelbyte.sdk.core.AccelByteSDK;
 import net.accelbyte.storage.CloudsaveStorage;
 import net.accelbyte.storage.Storage;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 @GRpcService
 @Slf4j
-public class GuildService extends GuildServiceGrpc.GuildServiceImplBase {
+public class GuildService extends ServiceGrpc.ServiceImplBase {
 
     private final String namespace;
 
