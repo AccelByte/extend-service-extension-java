@@ -33,7 +33,7 @@ WORKDIR /app
 COPY --from=grpc-server-builder /build/target/*.jar app.jar
 COPY jars/aws-opentelemetry-agent.jar aws-opentelemetry-agent.jar
 COPY --from=grpc-gateway-builder /output/$TARGETOS/$TARGETARCH/grpc_gateway .
-COPY gateway/*.swagger.json apidocs/
+COPY gateway/apidocs ./apidocs
 RUN rm -fv apidocs/permission.swagger.json
 COPY gateway/third_party third_party
 COPY wrapper.sh .

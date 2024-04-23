@@ -90,3 +90,5 @@ Thumbs.db
 # Others
 .run
 .cache
+
+gateway/grpc_gateway

@@ -13,26 +13,18 @@ PROJECT_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: clean build image imagex
 
-build: build_server build_gateway
-
-build_server:
+gen_gateway:
+	rm -rf gateway/apidocs gateway/pkg/pb
+	mkdir -p gateway/apidocs gateway/pkg/pb
 	docker run -t --rm -u $$(id -u):$$(id -g) \
-			-v $(PROJECT_DIR):/data/ -w /data/ \
-			-e GRADLE_USER_HOME=.gradle gradle:7.5.1-jdk17 \
-			gradle --console=plain -i --no-daemon build
-
-build_gateway:
-	rm -rfv gateway/pkg/pb/*
-	mkdir -p gateway/pkg/pb
-	docker run -t --rm -u $$(id -u):$$(id -g) \
-		-v $(PROJECT_DIR)/src:/source \
-		-v $(PROJECT_DIR)/gateway:/data \
-		-w /data/ rvolosatovs/protoc:4.1.0 \
-			--proto_path=/source/main/proto \
+		-v $(PROJECT_DIR)/src:/src \
+		-v $(PROJECT_DIR)/gateway:/gateway \
+		-w /gateway/ rvolosatovs/protoc:4.1.0 \
+			--proto_path=/src/main/proto \
 			--go_out=pkg/pb \
 			--go_opt=paths=source_relative \
 			--go-grpc_out=require_unimplemented_servers=false:pkg/pb \
-			--go-grpc_opt=paths=source_relative /source/main/proto/*.proto \
+			--go-grpc_opt=paths=source_relative /src/main/proto/*.proto \
 			--grpc-gateway_out=logtostderr=true:pkg/pb \
 			--grpc-gateway_opt paths=source_relative \
 			--openapiv2_out . \
@@ -43,6 +35,40 @@ build_gateway:
 		-v $$(pwd):/data \
 		-w /data/gateway golang:1.20-alpine3.19 \
 		go build -o grpc_gateway
+	mv gateway/*.swagger.json gateway/apidocs
+
+build: build_server build_gateway
+
+build_server:
+	docker run -t --rm -u $$(id -u):$$(id -g) \
+			-v $(PROJECT_DIR):/data/ -w /data/ \
+			-e GRADLE_USER_HOME=.gradle gradle:7.5.1-jdk17 \
+			gradle --console=plain -i --no-daemon clean build
+
+build_gateway: gen_gateway
+
+run_server:
+	docker run -t --rm -u $$(id -u):$$(id -g) \
+			-e GRADLE_USER_HOME=.gradle \
+			--env-file .env \
+			-v $(PROJECT_DIR):/data/ \
+			-w /data \
+			-p 6565:6565 \
+			-p 8080:8080 \
+			gradle:7.5.1-jdk17 \
+			gradle --console=plain -i --no-daemon run
+
+run_gateway: gen_gateway
+	docker run -it --rm -u $$(id -u):$$(id -g) \
+		-e GOCACHE=/data/.cache/go-cache \
+		-e GOPATH=/data/.cache/go-path \
+		--env-file .env \
+		-v $$(pwd):/data \
+		-w /data/gateway \
+		-p 8000:8000 \
+		--add-host host.docker.internal:host-gateway \
+		golang:1.20-alpine3.19 \
+		go run main.go --grpc-addr host.docker.internal:6565
 
 clean:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
