@@ -13,13 +13,21 @@ PROJECT_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: clean build image imagex
 
-gen-gateway:
+build: build_server build_gateway
+
+build_server:
+	docker run -t --rm -u $$(id -u):$$(id -g) \
+			-v $(PROJECT_DIR):/data/ -w /data/ \
+			-e GRADLE_USER_HOME=.gradle gradle:7.5.1-jdk17 \
+			gradle --console=plain -i --no-daemon build
+
+build_gateway:
 	rm -rfv gateway/pkg/pb/*
 	mkdir -p gateway/pkg/pb
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-v $(PROJECT_DIR)/src:/source \
 		-v $(PROJECT_DIR)/gateway:/data \
-		-w /data/ rvolosatovs/protoc:latest \
+		-w /data/ rvolosatovs/protoc:4.1.0 \
 			--proto_path=/source/main/proto \
 			--go_out=pkg/pb \
 			--go_opt=paths=source_relative \
@@ -30,13 +38,11 @@ gen-gateway:
 			--openapiv2_out . \
 			--openapiv2_opt logtostderr=true \
 			--openapiv2_opt use_go_templates=true
-
-mod-gateway:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
-		-v $(PROJECT_DIR)/gateway:/data \
-		-e GOCACHE=/tmp/cache \
-		-w /data/ golang:1.20 \
-		go mod tidy
+		-e GOCACHE=/data/.cache/go-cache \
+		-v $$(pwd):/data \
+		-w /data/gateway golang:1.20-alpine3.19 \
+		go build -o grpc_gateway
 
 clean:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
@@ -45,20 +51,8 @@ clean:
 			-e GRADLE_USER_HOME=.gradle gradle:7.5.1-jdk17 \
 			gradle --console=plain -i --no-daemon clean
 
-build: gen-gateway mod-gateway
-	docker run -t --rm -u $$(id -u):$$(id -g) \
-			-v $(PROJECT_DIR):/data/ -w /data/ \
-			-e GRADLE_USER_HOME=.gradle gradle:7.5.1-jdk17 \
-			gradle --console=plain -i --no-daemon build
-
 image:
 	docker buildx build -t ${IMAGE_NAME} --load .
-
-image-service:
-	docker build -f Dockerfile.service -t ${IMAGE_NAME}-service .
-
-image-gateway:
-	docker build -f Dockerfile.gateway -t ${IMAGE_NAME}-gateway .
 
 imagex: build
 	docker buildx inspect $(BUILDER) || docker buildx create --name $(BUILDER) --use
