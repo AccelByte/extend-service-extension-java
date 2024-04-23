@@ -12,14 +12,14 @@ import org.springframework.beans.factory.annotation.Value;
 
 @GRpcService
 @Slf4j
-public class GuildService extends ServiceGrpc.ServiceImplBase {
+public class MyService extends ServiceGrpc.ServiceImplBase {
 
     private final String namespace;
 
     private final Storage storage;
 
     @Autowired
-    public GuildService(
+    public MyService(
         @Value("${plugin.grpc.config.namespace}") String namespace,
         AccelByteSDK sdk
     ) {
