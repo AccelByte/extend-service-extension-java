@@ -1,4 +1,4 @@
-package net.accelbyte;
+package net.accelbyte.extend.serviceextension;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

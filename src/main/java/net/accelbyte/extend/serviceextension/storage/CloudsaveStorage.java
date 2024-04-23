@@ -1,4 +1,4 @@
-package net.accelbyte.storage;
+package net.accelbyte.extend.serviceextension.storage;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;

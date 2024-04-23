@@ -1,4 +1,4 @@
-package net.accelbyte.grpc;
+package net.accelbyte.extend.serviceextension.grpc;
 
 import io.grpc.ForwardingServerCallListener;
 import io.grpc.Metadata;

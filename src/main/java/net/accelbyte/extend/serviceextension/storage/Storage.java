@@ -1,4 +1,4 @@
-package net.accelbyte.storage;
+package net.accelbyte.extend.serviceextension.storage;
 
 import net.accelbyte.extend.serviceextension.GuildProgress;
 

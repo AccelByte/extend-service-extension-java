@@ -1,4 +1,4 @@
-package net.accelbyte.grpc;
+package net.accelbyte.extend.serviceextension.grpc;
 
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.config.MeterFilter;

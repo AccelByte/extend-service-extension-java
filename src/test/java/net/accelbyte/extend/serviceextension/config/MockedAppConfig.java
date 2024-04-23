@@ -1,4 +1,4 @@
-package net.accelbyte.config;
+package net.accelbyte.extend.serviceextension.config;
 
 import net.accelbyte.sdk.core.AccelByteSDK;
 import org.mockito.Mockito;

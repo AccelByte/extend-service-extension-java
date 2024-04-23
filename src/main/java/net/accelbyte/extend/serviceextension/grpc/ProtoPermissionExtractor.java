@@ -1,7 +1,6 @@
-package net.accelbyte.grpc;
+package net.accelbyte.extend.serviceextension.grpc;
 
 import com.google.protobuf.Descriptors;
-import lombok.extern.slf4j.Slf4j;
 import net.accelbyte.extend.serviceextension.Action;
 import net.accelbyte.extend.serviceextension.Permission;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,6 @@ import java.util.regex.Pattern;
 import static net.accelbyte.sdk.core.AccessTokenPayload.Types;
 
 @Component
-@Slf4j
 public class ProtoPermissionExtractor {
 
     public Types.Permission extractPermission(Descriptors.ServiceDescriptor serviceDesc, String protoFullMethod) {
@@ -23,7 +21,6 @@ public class ProtoPermissionExtractor {
             throw new IllegalArgumentException("Invalid gRPC method name format");
         }
 
-        String serviceName = matcher.group(1);
         String methodName = matcher.group(2);
 
         Descriptors.MethodDescriptor method = serviceDesc.findMethodByName(methodName);

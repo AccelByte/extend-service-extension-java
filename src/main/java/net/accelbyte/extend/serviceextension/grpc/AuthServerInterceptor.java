@@ -1,4 +1,4 @@
-package net.accelbyte.grpc;
+package net.accelbyte.extend.serviceextension.grpc;
 
 import com.google.protobuf.Descriptors;
 import io.grpc.*;

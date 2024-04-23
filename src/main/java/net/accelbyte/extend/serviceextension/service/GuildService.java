@@ -1,11 +1,11 @@
-package net.accelbyte.service;
+package net.accelbyte.extend.serviceextension.service;
 
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import net.accelbyte.extend.serviceextension.*;
 import net.accelbyte.sdk.core.AccelByteSDK;
-import net.accelbyte.storage.CloudsaveStorage;
-import net.accelbyte.storage.Storage;
+import net.accelbyte.extend.serviceextension.storage.CloudsaveStorage;
+import net.accelbyte.extend.serviceextension.storage.Storage;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

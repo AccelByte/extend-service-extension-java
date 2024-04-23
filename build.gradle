@@ -10,7 +10,7 @@ version = '0.0.1'
 sourceCompatibility = '17'
 project.buildDir = 'target'
 
-mainClassName = 'net.accelbyte.Application'
+mainClassName = 'net.accelbyte.extend.serviceextension.Application'
 
 repositories {
 	mavenCentral()

@@ -1,4 +1,4 @@
-package net.accelbyte.config;
+package net.accelbyte.extend.serviceextension.config;
 
 import net.accelbyte.sdk.core.AccelByteSDK;
 import net.accelbyte.sdk.core.client.OkhttpClient;

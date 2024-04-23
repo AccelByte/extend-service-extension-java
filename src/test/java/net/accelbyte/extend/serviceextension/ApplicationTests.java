@@ -1,6 +1,6 @@
-package net.accelbyte;
+package net.accelbyte.extend.serviceextension;
 
-import net.accelbyte.config.MockedAppConfig;
+import net.accelbyte.extend.serviceextension.config.MockedAppConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
