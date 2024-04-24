@@ -14,28 +14,13 @@ PROJECT_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 .PHONY: clean build image imagex
 
 gen_gateway:
-	rm -rf gateway/apidocs gateway/pkg/pb
-	mkdir -p gateway/apidocs gateway/pkg/pb
 	docker run -t --rm -u $$(id -u):$$(id -g) \
-		-v $(PROJECT_DIR)/src:/src \
-		-v $(PROJECT_DIR)/gateway:/gateway \
-		-w /gateway/ rvolosatovs/protoc:4.1.0 \
-			--proto_path=/src/main/proto \
-			--go_out=pkg/pb \
-			--go_opt=paths=source_relative \
-			--go-grpc_out=require_unimplemented_servers=false:pkg/pb \
-			--go-grpc_opt=paths=source_relative /src/main/proto/*.proto \
-			--grpc-gateway_out=logtostderr=true:pkg/pb \
-			--grpc-gateway_opt paths=source_relative \
-			--openapiv2_out . \
-			--openapiv2_opt logtostderr=true \
-			--openapiv2_opt use_go_templates=true
-	docker run -t --rm -u $$(id -u):$$(id -g) \
-		-e GOCACHE=/data/.cache/go-cache \
-		-v $$(pwd):/data \
-		-w /data/gateway golang:1.20-alpine3.19 \
-		go build -o grpc_gateway
-	mv gateway/*.swagger.json gateway/apidocs
+		-v $$(pwd)/src:/src \
+		-v $$(pwd)/gateway:/gateway \
+		-w /gateway \
+		--entrypoint /bin/bash \
+		rvolosatovs/protoc:4.1.0 \
+			gen_gateway.sh
 
 build: build_server build_gateway
 
