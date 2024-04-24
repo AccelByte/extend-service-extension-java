@@ -78,23 +78,23 @@ imagex_push: build
 	docker buildx build -t ${REPO_URL}:${IMAGE_TAG} --platform linux/amd64 --push .
 	docker buildx rm --keep-state $(BUILDER)
 
-test_functional_local_hosted:
+test_sample_local_hosted:
 	@test -n "$(ENV_PATH)" || (echo "ENV_PATH is not set"; exit 1)
-	docker build --tag service-extension-test-functional -f test/functional/Dockerfile test/functional && \
+	docker build --tag service-extension-test-functional -f test/sample/Dockerfile test/sample && \
 	docker run --rm -t \
 		--env-file $(ENV_PATH) \
 		-e GOCACHE=/data/.cache/go-build \
 		-e GOPATH=/data/.cache/mod \
 		-u $$(id -u):$$(id -g) \
 		-v $$(pwd):/data \
-		-w /data service-extension-test-functional bash ./test/functional/test-local-hosted.sh
+		-w /data service-extension-test-functional bash ./test/sample/test-local-hosted.sh
 
-test_functional_accelbyte_hosted:
+test_sample_accelbyte_hosted:
 	@test -n "$(ENV_PATH)" || (echo "ENV_PATH is not set"; exit 1)
 ifeq ($(shell uname), Linux)
 	$(eval DARGS := -u $$(shell id -u):$$(shell id -g) --group-add $$(shell getent group docker | cut -d ':' -f 3))
 endif
-	docker build --tag service-extension-test-functional -f test/functional/Dockerfile test/functional && \
+	docker build --tag service-extension-test-functional -f test/sample/Dockerfile test/sample && \
 	docker run --rm -t \
 		--env-file $(ENV_PATH) \
 		-e PROJECT_DIR=$(PROJECT_DIR) \
@@ -104,4 +104,4 @@ endif
 		$(DARGS) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v $$(pwd):/data \
-		-w /data service-extension-test-functional bash ./test/functional/test-accelbyte-hosted.sh
+		-w /data service-extension-test-functional bash ./test/sample/test-accelbyte-hosted.sh
