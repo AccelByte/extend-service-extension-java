@@ -13,14 +13,13 @@ PROJECT_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: clean build image imagex
 
-gen_gateway:
+proto:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
-		-v $$(pwd)/src:/src \
-		-v $$(pwd)/gateway:/gateway \
-		-w /gateway \
+		-v $$(pwd):/build \
+		-w /build \
 		--entrypoint /bin/bash \
 		rvolosatovs/protoc:4.1.0 \
-			gen_gateway.sh
+			proto.sh
 
 build: build_server build_gateway
 
@@ -30,7 +29,7 @@ build_server:
 			-e GRADLE_USER_HOME=.gradle gradle:7.5.1-jdk17 \
 			gradle --console=plain -i --no-daemon clean build
 
-build_gateway: gen_gateway
+build_gateway: proto
 
 run_server:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
@@ -43,7 +42,7 @@ run_server:
 			gradle:7.5.1-jdk17 \
 			gradle --console=plain -i --no-daemon run
 
-run_gateway: gen_gateway
+run_gateway: proto
 	docker run -it --rm -u $$(id -u):$$(id -g) \
 		-e GOCACHE=/data/.cache/go-cache \
 		-e GOPATH=/data/.cache/go-path \

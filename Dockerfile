@@ -12,10 +12,12 @@ RUN sh gradlew build -i
 
 # gRPC Gateway Gen
 FROM --platform=$BUILDPLATFORM rvolosatovs/protoc:4.1.0 as grpc-gateway-gen
-COPY src /src
-COPY gateway /gateway
-WORKDIR /gateway
-RUN bash gen_gateway.sh
+WORKDIR /build
+COPY gateway gateway
+COPY src src
+COPY proto.sh .
+RUN bash proto.sh
+
 
 
 # gRPC gateway builder
@@ -31,7 +33,7 @@ RUN go mod download && \
     go mod verify
 COPY gateway/ .
 RUN rm -rf pkg/pb
-COPY --from=grpc-gateway-gen /gateway/pkg/pb ./pkg/pb
+COPY --from=grpc-gateway-gen /build/gateway/pkg/pb ./pkg/pb
 RUN go build -v -o /output/$TARGETOS/$TARGETARCH/grpc_gateway .
 
 
@@ -43,7 +45,7 @@ WORKDIR /app
 COPY --from=grpc-server-builder /build/target/*.jar app.jar
 COPY jars/aws-opentelemetry-agent.jar aws-opentelemetry-agent.jar
 COPY --from=grpc-gateway-builder /output/$TARGETOS/$TARGETARCH/grpc_gateway .
-COPY --from=grpc-gateway-gen /gateway/apidocs ./apidocs
+COPY --from=grpc-gateway-gen /build/gateway/apidocs ./apidocs
 RUN rm -fv apidocs/permission.swagger.json
 COPY gateway/third_party third_party
 COPY wrapper.sh .
