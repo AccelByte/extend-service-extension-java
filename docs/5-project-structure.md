@@ -8,23 +8,17 @@ This chapter offers an overview of the Guild Service's project structure. Unders
 ├── gateway                                                 # gRPC Gateway code (GoLang)
 ├── src                                                     # Service's project
 │   ├── main
-│   │   ├── java
-│   │   │   └── net
-│   │   │       └── accelbyte
-│   │   │           ├── Application.java
-│   │   │           ├── config
-│   │   │           ├── grpc                                
-│   │   │           ├── service                             # Service's project
-│   │   │           └── storage
+│   │   ├── java/net/accelbyte/extend/serviceextension
+│   │   │   ├── Application.java
+│   │   │   ├── config
+│   │   │   ├── grpc                                
+│   │   │   ├── service                                     # Service's project
+│   │   │   └── storage
 │   │   ├── proto                                           # Your protobuf folder
 │   │   └── resources
 │   └── test
 ├── Dockerfile                                              # To build complete image with service and grpc-gateway
-├── Dockerfile.gateway                                      # To build grpc-gateway image only
-├── Dockerfile.service                                      # To build service image only
 ├── docker-compose.yaml                                     # Compose file that use complete image
-├── docker-compose.multi.yaml                               # Compose file that use separated image for 
-service and grpc-gateway
 └── Makefile
 ```
 

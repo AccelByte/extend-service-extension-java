@@ -15,9 +15,9 @@ The first step to using CloudSave is setting it up.
 In the context of our GuildService, this involves adding Java AccelByteSdk to our service and bootstrap it.
 We will use dependency injection to supply the AccelByteSDK object to our service implementation class.
 
-1. Java Accelbyte SDK instance, we're using spring dependency injection, please refer to `src/main/java/net/accelbyte/config/AppConfig.java` for method `provideAccelbyteSdk()` 
+1. Java Accelbyte SDK instance, we're using spring dependency injection, please refer to `src/main/java/net/accelbyte/extend/serviceextension/config/AppConfig.java` for method `provideAccelbyteSdk()` 
 
-2. Create `AdminGameRecord` which that wraps all Cloudsave operation for us, refer to `src/main/java/net/accelbyte/storage/CloudsaveStorage.java`
+2. Create `AdminGameRecord` which that wraps all Cloudsave operation for us, refer to `src/main/java/net/accelbyte/extend/serviceextension/storage/CloudsaveStorage.java`
 
 
 ## 8.3. Using CloudSave in GuildService
@@ -51,7 +51,7 @@ you would save the updated progress to CloudSave like so:
     }
 ```
 
-For more accurate details how it was implemented please refer to [src/main/java/net/accelbyte/storage/CloudsaveStorage.java](src/main/java/net/accelbyte/storage/CloudsaveStorage.java)
+For more accurate details how it was implemented please refer to [src/main/java/net/accelbyte/extend/serviceextension/storage/CloudsaveStorage.java](src/main/java/net/accelbyte/extend/serviceextension/storage/CloudsaveStorage.java)
 
 That's it! You've now integrated AccelByte's CloudSave into your GuildService. 
 You can now use CloudSave to save and retrieve guild progress, along with any other 

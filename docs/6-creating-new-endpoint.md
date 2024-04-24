@@ -7,10 +7,10 @@ In this chapter, we will be adding new endpoints to our service. This involves t
 
 ## 6.1 Defining the Service in the `.proto` File
 
-gRPC services and messages are defined in `.proto` files. Our `.proto` file is located in `src/main/proto/guildService.proto`. Let's add new service methods to our `GuildService`:
+gRPC services and messages are defined in `.proto` files. Our `.proto` file is located in `src/main/proto/service.proto`. Let's add new service methods to our `Service`:
 
 ```protobuf
-service GuildService {
+service Service {
 
   rpc CreateOrUpdateGuildProgress (CreateOrUpdateGuildProgressRequest) returns (CreateOrUpdateGuildProgressResponse) {
     option (permission.action) = CREATE;
@@ -71,11 +71,12 @@ message GetGuildProgressResponse {
 // OpenAPI options for the entire API.
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
-    title: "Guild Service API";
+    title: "Service API";
     version: "1.0";
   };
   schemes: HTTP;
   schemes: HTTPS;
+  base_path: "/service";
 
   security_definitions: {
     security: {
@@ -105,16 +106,3 @@ Permission control via `permission.proto`
 
 - `permission.action`: it can be either READ, CREATE, UPDATE, DELETE
 - `permission.resource`: Defines scope-based access control (e.g., ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD).
-
-
-## 6.2 Generating gRPC Gateway Go and Java Code
-
-After updating our .proto file, we need to generate Go and Java code from it.
-The protobuf compiler `protoc` is used to generate Go code from our .proto file. 
-However, in our setup, we've simplified this with a `Makefile`.
-
-```bash
-make gen-gateway
-```
-
-> :warning: This action will clear all files inside `gateway/pkg/pb`. This directory is reserved for grpc-gateway auto-generated code. Do not put your code inside this directory as it will be removed if you run this action.
