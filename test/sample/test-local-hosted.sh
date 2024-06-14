@@ -18,10 +18,12 @@ trap clean_up EXIT
 
 echo '# Build and run Extend app locally'
 
-(cd gateway && go build -o gateway)
-bash gradlew clean build -i
+(cd gateway && go build -buildvcs=false -o gateway)
+bash gradlew -i --no-daemon generateProto \
+    || find $GRADLE_USER_HOME -type f -iname 'protoc-*.exe' -exec chmod +x {} \;   # For MacOS docker host: Workaround to make sure protoc-*.exe is executable
+bash gradlew -i --no-daemon clean build
 (cd gateway && BASE_PATH=/$APP_BASE_PATH ./gateway) & GATEWAY_PID=$!
-bash gradlew run & SERVICE_PID=$!
+bash gradlew -i --no-daemon run & SERVICE_PID=$!
 
 (for _ in {1..12}; do bash -c "timeout 1 echo > /dev/tcp/127.0.0.1/8000" 2>/dev/null && exit 0 || sleep 5s; done; exit 1)
 (for _ in {1..12}; do bash -c "timeout 1 echo > /dev/tcp/127.0.0.1/8080" 2>/dev/null && exit 0 || sleep 5s; done; exit 1)
