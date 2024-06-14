@@ -27,7 +27,7 @@ build_server:
 			-v $$(pwd):/data \
 			-w /data \
 			-e GRADLE_USER_HOME=.gradle \
-			gradle:7.5.1-jdk17 \
+			gradle:7.6.4-jdk17 \
 			gradle -i --no-daemon generateProto \
 					|| find .gradle -type f -iname 'protoc-*.exe' -exec chmod +x {} \;		# For MacOS docker host: Workaround to make protoc-*.exe executable
 	docker run -t --rm \
@@ -35,7 +35,7 @@ build_server:
 			-v $$(pwd):/data \
 			-w /data \
 			-e GRADLE_USER_HOME=.gradle \
-			gradle:7.5.1-jdk17 \
+			gradle:7.6.4-jdk17 \
 			gradle -i --no-daemon build
 
 build_gateway: proto
@@ -48,7 +48,7 @@ run_server:
 			-w /data \
 			-p 6565:6565 \
 			-p 8080:8080 \
-			gradle:7.5.1-jdk17 \
+			gradle:7.6.4-jdk17 \
 			gradle --console=plain -i --no-daemon run
 
 run_gateway: proto
@@ -67,7 +67,7 @@ clean:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 			-v $$(pwd):/data/ \
 			-w /data/ \
-			-e GRADLE_USER_HOME=.gradle gradle:7.5.1-jdk17 \
+			-e GRADLE_USER_HOME=.gradle gradle:7.6.4-jdk17 \
 			gradle --console=plain -i --no-daemon clean
 
 image:
