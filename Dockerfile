@@ -1,5 +1,5 @@
 # gRPC server builder
-FROM --platform=$BUILDPLATFORM ibm-semeru-runtimes:open-17-jdk as grpc-server-builder
+FROM --platform=$BUILDPLATFORM ibm-semeru-runtimes:open-17-jdk AS grpc-server-builder
 WORKDIR /build
 COPY gradle gradle
 COPY gradlew settings.gradle .
@@ -11,7 +11,7 @@ RUN sh gradlew build -i
 
 
 # gRPC Gateway Gen
-FROM --platform=$BUILDPLATFORM rvolosatovs/protoc:4.1.0 as grpc-gateway-gen
+FROM --platform=$BUILDPLATFORM rvolosatovs/protoc:4.1.0 AS grpc-gateway-gen
 WORKDIR /build
 COPY gateway gateway
 COPY src src
@@ -21,7 +21,7 @@ RUN bash proto.sh
 
 
 # gRPC gateway builder
-FROM --platform=$BUILDPLATFORM golang:1.20 as grpc-gateway-builder
+FROM --platform=$BUILDPLATFORM golang:1.20 AS grpc-gateway-builder
 ARG TARGETOS
 ARG TARGETARCH
 ARG GOOS=$TARGETOS
