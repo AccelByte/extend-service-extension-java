@@ -21,7 +21,7 @@ echo '# Build and run Extend app locally'
 (cd gateway && go build -buildvcs=false -o gateway)
 bash gradlew -i --no-daemon generateProto \
     || find $GRADLE_USER_HOME -type f -iname 'protoc-*.exe' -exec chmod +x {} \;   # For MacOS docker host: Workaround to make sure protoc-*.exe is executable
-bash gradlew -i --no-daemon clean build
+bash gradlew -i --no-daemon build
 (cd gateway && BASE_PATH=/$APP_BASE_PATH ./gateway) & GATEWAY_PID=$!
 bash gradlew -i --no-daemon run & SERVICE_PID=$!
 
