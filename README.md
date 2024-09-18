@@ -29,6 +29,34 @@ You can clone this repository to begin developing your own
 endpoints in `service.proto` file and implementing the handlers for those 
 endpoints.
 
+## Project Structure
+
+Customizing your Extend Service Extension app involves modifying the`service.proto` and `MyService.java` files. The app initializes key components, such as the gRPC server, in `Application.java`. When a request is made to the RESTful endpoint, the gRPC gateway handles it and forwards it to the corresponding gRPC method. Before `MyService.java` executes any custom logic based on the request, the `AuthServerInterceptor.java` first verifies that the request has the necessary access token and authorization. No other files need to be modified unless you require further customization.
+
+```shell
+.
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── net
+│   │   │       └── accelbyte
+│   │   │           └── extend
+│   │   │               └── serviceextension
+│   │   │                   ├── Application.java    # App starts here
+│   │   │                   ├── grpc
+│   │   │                   │   ├── AuthServerInterceptor.java    # gRPC server interceptor for access token authentication and authorization
+│   │   │                   │   └── ...
+│   │   │                   ├── service
+│   │   │                   │   └── MyService.java    # gRPC server implementation containing the custom logic
+│   │   │                   └── ...
+│   │   ├── proto
+│   │   │   ├── service.proto   # gRPC server protobuf with additional options for exposing as RESTful web service
+│   │   │   └── ...
+│   │   └── ...
+│   └── ...
+└── ...
+```
+
 ## Prerequisites
 
 1. Windows 11 WSL2 or Linux Ubuntu 22.04 or macOS 14+ with the following tools installed:
