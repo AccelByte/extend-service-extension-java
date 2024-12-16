@@ -38,7 +38,8 @@ RUN go build -v -o /output/$TARGETOS/$TARGETARCH/grpc_gateway .
 
 
 # Extend Service Extension app
-FROM ibm-semeru-runtimes:open-17-jre
+FROM alpine:3.18
+RUN apk add --no-cache openjdk17
 ARG TARGETOS
 ARG TARGETARCH
 WORKDIR /app
