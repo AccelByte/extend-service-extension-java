@@ -38,8 +38,7 @@ RUN go build -v -o /output/$TARGETOS/$TARGETARCH/grpc_gateway .
 
 
 # Extend Service Extension app
-FROM alpine:3.18
-RUN apk add --no-cache openjdk17
+FROM eclipse-temurin:17-jdk
 ARG TARGETOS
 ARG TARGETARCH
 WORKDIR /app
