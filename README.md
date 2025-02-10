@@ -142,7 +142,11 @@ Customizing your Extend Service Extension app involves modifying the`service.pro
          ...
          ```
 
-   e. [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli)
+   e. [Postman](https://www.postman.com/)
+
+      - Use binary available [here](https://www.postman.com/downloads/)
+
+   f. [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli)
 
       - Use the available binary from [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli/releases).
 
