@@ -2,8 +2,8 @@
 
 set -e
 
-rm -rf apidocs pkg/pb
-mkdir -p apidocs pkg/pb
+rm -rf gateway/apidocs gateway/pkg/pb
+mkdir -p gateway/apidocs gateway/pkg/pb
 protoc-wrapper -I/usr/include \
                 --proto_path=src/main/proto \
                 --go_out=gateway/pkg/pb \
