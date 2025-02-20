@@ -8,7 +8,7 @@ BUILDER := extend-builder
 IMAGE_NAME := $(shell basename "$$(pwd)")-app
 
 GRADLE_IMAGE := gradle:7.6.4-jdk17
-GOLANG_IMAGE := golang:1.20-alpine3.19
+GOLANG_IMAGE := golang:1.23-alpine3.21
 PROTOC_IMAGE := rvolosatovs/protoc:4.1.0
 
 .PHONY: build
