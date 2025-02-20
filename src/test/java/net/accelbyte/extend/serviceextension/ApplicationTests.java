@@ -1,11 +1,12 @@
 package net.accelbyte.extend.serviceextension;
 
-import net.accelbyte.extend.serviceextension.config.MockedAppConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import net.accelbyte.extend.serviceextension.config.AppConfig;
+
 @SpringBootTest(
-	classes = MockedAppConfig.class,
+	classes = AppConfig.class,
 	properties = "spring.main.allow-bean-definition-overriding=true"
 )
 class ApplicationTests {

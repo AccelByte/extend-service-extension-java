@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
 @TestConfiguration
-public class MockedAppConfig {
+public class AppConfig {
 
     @Bean
     @Primary
