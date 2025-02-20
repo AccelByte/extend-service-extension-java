@@ -1,8 +1,6 @@
-# Copyright (c) 2018-2019 AccelByte Inc. All Rights Reserved.
+# Copyright (c) 2018-2025 AccelByte Inc. All Rights Reserved.
 # This is licensed software from AccelByte Inc, for limitations
 # and restrictions contact your company contract manager.
-
-version: '3.5'
 
 services:
   app:
@@ -13,17 +11,17 @@ services:
       - "8000:8000"
       # - "5006:5006"   # For debugging only
     environment:
-      - AB_BASE_URL=${AB_BASE_URL}
-      - AB_CLIENT_ID=${AB_CLIENT_ID}
-      - AB_CLIENT_SECRET=${AB_CLIENT_SECRET}
-      - AB_NAMESPACE=${AB_NAMESPACE}
-      - PLUGIN_GRPC_SERVER_AUTH_ENABLED
+      - AB_BASE_URL=${AB_BASE_URL:?AB_BASE_URL is not set or empty}
+      - AB_CLIENT_ID=${AB_CLIENT_ID:?AB_CLIENT_ID is not set or empty}
+      - AB_CLIENT_SECRET=${AB_CLIENT_SECRET:?AB_CLIENT_SECRET is not set or empty}
+      - AB_NAMESPACE=${AB_NAMESPACE:?AB_NAMESPACE is not set or empty}
+      - BASE_PATH=${BASE_PATH:?BASE_PATH is not set or empty}
       - OTEL_EXPORTER_ZIPKIN_ENDPOINT=http://host.docker.internal:9411/api/v2/spans
-      - OTEL_TRACES_EXPORTER=zipkin
       - OTEL_METRICS_EXPORTER=none
-      - OTEL_SERVICE_NAME=ExtendServiceExtensionServerJava
+      - OTEL_TRACES_EXPORTER=zipkin
       - OTEL_PROPAGATORS=b3multi
-      - BASE_PATH
+      - OTEL_SERVICE_NAME=ExtendServiceExtensionAppJava
+      - PLUGIN_GRPC_SERVER_AUTH_ENABLED
       # - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006    # For debugging only
     extra_hosts:
       - host.docker.internal:host-gateway
