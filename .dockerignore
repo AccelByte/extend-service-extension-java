@@ -1,4 +1,5 @@
 .cache/
 .gradle/
 .vscode/
+docs/
 target/
