@@ -35,7 +35,7 @@ RUN GOOS=$TARGETOS GOARCH=$TARGETARCH \
 
 # Extend Service Extension app
 
-FROM eclipse-temurin:17-jre-alpine-3.21
+FROM amazoncorretto:17-alpine3.21
 WORKDIR /app
 COPY --from=grpc-server-builder /build/target/*.jar app.jar
 COPY jars/aws-opentelemetry-agent.jar .
