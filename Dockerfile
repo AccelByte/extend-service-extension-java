@@ -21,7 +21,7 @@ RUN sh gradlew build -i
 
 # gRPC gateway builder
 
-FROM --platform=$BUILDPLATFORM golang:1.23-alpine3.21 AS grpc-gateway-builder
+FROM --platform=$BUILDPLATFORM golang:1.24-alpine3.21 AS grpc-gateway-builder
 ARG TARGETOS
 ARG TARGETARCH
 WORKDIR /build
