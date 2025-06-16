@@ -13,6 +13,17 @@ PROTOC_IMAGE := rvolosatovs/protoc:4.1.0
 
 .PHONY: build
 
+build: build_server build_gateway
+
+clean:
+	docker run -t --rm \
+			-u $$(id -u):$$(id -g) \
+			-e GRADLE_USER_HOME=.cache/gradle \
+			-v $$(pwd):/data/ \
+			-w /data/ \
+			${GRADLE_IMAGE} \
+			gradle --console=plain -i --no-daemon clean
+
 proto:
 	docker run -t --rm \
 		-u $$(id -u):$$(id -g) \
@@ -21,8 +32,6 @@ proto:
 		--entrypoint /bin/bash \
 		${PROTOC_IMAGE} \
 		proto.sh
-
-build: build_server build_gateway
 
 build_server:
 	docker run -t --rm \
@@ -65,15 +74,6 @@ run_gateway: proto
 		--add-host host.docker.internal:host-gateway \
 		${GOLANG_IMAGE} \
 		go run main.go --grpc-addr host.docker.internal:6565
-
-clean:
-	docker run -t --rm \
-			-u $$(id -u):$$(id -g) \
-			-e GRADLE_USER_HOME=.cache/gradle \
-			-v $$(pwd):/data/ \
-			-w /data/ \
-			${GRADLE_IMAGE} \
-			gradle --console=plain -i --no-daemon clean
 
 image:
 	docker buildx build -t ${IMAGE_NAME} --load .
