@@ -188,7 +188,6 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij,visualstudiocode
 
-.cache/
-.env
 bin/
 target/
+.env
