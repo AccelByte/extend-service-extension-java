@@ -11,9 +11,6 @@ PROTOC_IMAGE := rvolosatovs/protoc:4.1.0
 
 BUILD_CACHE_VOLUME := $(shell echo '$(PROJECT_NAME)' | sed 's/[^a-zA-Z0-9_-]//g')-build-cache
 
-BUILDER := extend-builder
-IMAGE_NAME := $(shell basename "$$(pwd)")-app
-
 .PHONY: build
 
 build: build_server build_gateway
@@ -96,19 +93,3 @@ run_gateway: proto
 		--add-host host.docker.internal:host-gateway \
 		${GOLANG_IMAGE} \
 		go run main.go --grpc-addr host.docker.internal:6565
-
-image:
-	docker buildx build -t ${IMAGE_NAME} --load .
-
-imagex:
-	docker buildx inspect ${BUILDER} || docker buildx create --name ${BUILDER} --use
-	docker buildx build -t ${IMAGE_NAME} --platform linux/amd64 .
-	docker buildx build -t ${IMAGE_NAME} --load .
-	docker buildx rm --keep-state ${BUILDER}
-
-imagex_push:
-	@test -n "${IMAGE_TAG}" || (echo "IMAGE_TAG is not set (e.g. 'v0.1.0', 'latest')"; exit 1)
-	@test -n "${REPO_URL}" || (echo "REPO_URL is not set"; exit 1)
-	docker buildx inspect ${BUILDER} || docker buildx create --name ${BUILDER} --use
-	docker buildx build -t ${REPO_URL}:${IMAGE_TAG} --platform linux/amd64 --push .
-	docker buildx rm --keep-state ${BUILDER}
