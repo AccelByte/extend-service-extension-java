@@ -189,5 +189,6 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij,visualstudiocode
 
 bin/
+gateway/grpc_gateway
 target/
 .env
