@@ -15,25 +15,6 @@ BUILD_CACHE_VOLUME := $(shell echo '$(PROJECT_NAME)' | sed 's/[^a-zA-Z0-9_-]//g'
 
 build: build_server build_gateway
 
-clean:
-	docker run -t --rm \
-			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
-			$(GRADLE_IMAGE) \
-			chown $$(id -u):$$(id -g) /tmp/build-cache		# For MacOS docker host: Workaround for /tmp/build-cache folder owned by root
-	docker run -t --rm \
-			-u $$(id -u):$$(id -g) \
-			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
-			-v $$(pwd):/data \
-			-w /data \
-			$(GRADLE_IMAGE) \
-			gradle \
-					--gradle-user-home /tmp/build-cache/gradle \
-					--project-cache-dir /tmp/build-cache/gradle \
-					--console=plain \
-					--info \
-					--no-daemon \
-					clean
-
 proto:
 	docker run -t --rm \
 		-u $$(id -u):$$(id -g) \
@@ -47,7 +28,7 @@ build_server:
 	docker run -t --rm \
 			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
 			$(GRADLE_IMAGE) \
-			chown $$(id -u):$$(id -g) /tmp/build-cache		# For MacOS docker host: Workaround for /tmp/build-cache folder owned by root
+			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
 	docker run -t --rm \
 			-u $$(id -u):$$(id -g) \
 			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
@@ -63,8 +44,24 @@ build_server:
 					build
 
 build_gateway: proto
+	docker run -t --rm \
+			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
+			$(GOLANG_IMAGE) \
+			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
+	docker run -t --rm -u $$(id -u):$$(id -g) \
+			-e GOCACHE=/tmp/build-cache/go/cache \
+			-e GOMODCACHE=/tmp/build-cache/go/modcache \
+			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
+			-v $$(pwd):/data \
+			-w /data/gateway \
+			${GOLANG_IMAGE} \
+			go build -modcacherw -o grpc_gateway
 
 run_server:
+	docker run -t --rm \
+			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
+			$(GRADLE_IMAGE) \
+			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 			--env-file .env \
 			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
@@ -82,14 +79,18 @@ run_server:
 					run
 
 run_gateway: proto
+	docker run -t --rm \
+			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
+			$(GOLANG_IMAGE) \
+			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
 	docker run -it --rm -u $$(id -u):$$(id -g) \
-		-e GOCACHE=/tmp/build-cache/go/cache \
-		-e GOMODCACHE=/tmp/build-cache/go/modcache \
-		--env-file .env \
-		-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
-		-v $$(pwd):/data \
-		-w /data/gateway \
-		-p 8000:8000 \
-		--add-host host.docker.internal:host-gateway \
-		${GOLANG_IMAGE} \
-		go run main.go --grpc-addr host.docker.internal:6565
+			-e GOCACHE=/tmp/build-cache/go/cache \
+			-e GOMODCACHE=/tmp/build-cache/go/modcache \
+			--env-file .env \
+			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
+			-v $$(pwd):/data \
+			-w /data/gateway \
+			-p 8000:8000 \
+			--add-host host.docker.internal:host-gateway \
+			${GOLANG_IMAGE} \
+			go run main.go --grpc-addr host.docker.internal:6565
