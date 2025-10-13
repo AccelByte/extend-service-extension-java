@@ -24,11 +24,7 @@ proto:
 		${PROTOC_IMAGE} \
 		proto.sh
 
-build_server:
-	docker run -t --rm \
-			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
-			$(GRADLE_IMAGE) \
-			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
+build_server: prepare_build_cache
 	docker run -t --rm \
 			-u $$(id -u):$$(id -g) \
 			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
@@ -43,11 +39,7 @@ build_server:
 					--no-daemon \
 					build
 
-build_gateway: proto
-	docker run -t --rm \
-			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
-			$(GOLANG_IMAGE) \
-			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
+build_gateway: proto prepare_build_cache
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 			-e GOCACHE=/tmp/build-cache/go/cache \
 			-e GOMODCACHE=/tmp/build-cache/go/modcache \
@@ -57,11 +49,7 @@ build_gateway: proto
 			${GOLANG_IMAGE} \
 			go build -modcacherw -o grpc_gateway
 
-run_server:
-	docker run -t --rm \
-			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
-			$(GRADLE_IMAGE) \
-			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
+run_server: prepare_build_cache
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 			--env-file .env \
 			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
@@ -78,11 +66,7 @@ run_server:
 					--no-daemon \
 					run
 
-run_gateway: proto
-	docker run -t --rm \
-			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
-			$(GOLANG_IMAGE) \
-			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
+run_gateway: proto prepare_build_cache
 	docker run -it --rm -u $$(id -u):$$(id -g) \
 			-e GOCACHE=/tmp/build-cache/go/cache \
 			-e GOMODCACHE=/tmp/build-cache/go/modcache \
@@ -94,3 +78,9 @@ run_gateway: proto
 			--add-host host.docker.internal:host-gateway \
 			${GOLANG_IMAGE} \
 			go run main.go --grpc-addr host.docker.internal:6565
+
+prepare_build_cache:
+	docker run -t --rm \
+			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
+			busybox:1.37.0 \
+			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
