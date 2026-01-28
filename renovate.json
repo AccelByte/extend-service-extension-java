@@ -1,3 +1,18 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["amazoncorretto"],
+      "separateMinorPatch": true,
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "matchManagers": ["gradle-wrapper"],
+      "separateMinorPatch": true,
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    }
+  ]
 }
