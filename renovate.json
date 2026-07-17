@@ -4,13 +4,11 @@
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["amazoncorretto"],
-      "separateMinorPatch": true,
       "matchUpdateTypes": ["major"],
       "enabled": false
     },
     {
       "matchManagers": ["gradle-wrapper"],
-      "separateMinorPatch": true,
       "matchUpdateTypes": ["major"],
       "enabled": false
     }
