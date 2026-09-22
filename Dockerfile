@@ -35,7 +35,7 @@ RUN GOOS=$TARGETOS GOARCH=$TARGETARCH \
 
 # Extend Service Extension app
 
-FROM amazoncorretto:17-alpine3.21
+FROM public.ecr.aws/c0i0b4n8/accelbyte/base-images/amazoncoretto-21:1.0.2-alpine3.23
 WORKDIR /app
 COPY --from=grpc-server-builder /build/target/*.jar app.jar
 COPY jars/aws-opentelemetry-agent.jar .
