@@ -1,6 +1,6 @@
 # gRPC gateway gen
 
-FROM --platform=$BUILDPLATFORM rvolosatovs/protoc:4.1.0 AS grpc-gateway-gen
+FROM --platform=$BUILDPLATFORM rvolosatovs/protoc:v7.0.0 AS grpc-gateway-gen
 WORKDIR /build
 COPY gateway gateway
 COPY src src
@@ -9,7 +9,7 @@ RUN sh proto.sh
 
 # gRPC server builder
 
-FROM --platform=$BUILDPLATFORM gradle:7.6.4-jdk17 AS grpc-server-builder
+FROM --platform=$BUILDPLATFORM gradle:9.6.0-jdk17 AS grpc-server-builder
 WORKDIR /build
 COPY gradle gradle
 COPY gradlew settings.gradle .
