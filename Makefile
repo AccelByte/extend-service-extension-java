@@ -6,7 +6,7 @@ SHELL := /bin/bash
 
 PROJECT_NAME := $(shell basename "$$(pwd)")
 GRADLE_IMAGE := gradle:7.6.4-jdk17
-GOLANG_IMAGE := golang:1.24-alpine3.21
+GOLANG_IMAGE := golang:1.26
 PROTOC_IMAGE := rvolosatovs/protoc:4.1.0
 
 BUILD_CACHE_VOLUME := $(shell echo '$(PROJECT_NAME)' | sed 's/[^a-zA-Z0-9_-]//g')-build-cache
