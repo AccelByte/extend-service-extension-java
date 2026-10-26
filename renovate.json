@@ -3,7 +3,7 @@
   "packageRules": [
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["amazoncorretto"],
+      "matchPackageNames": ["**/amazoncorretto*", "**/amazoncoretto*"],
       "matchUpdateTypes": ["major"],
       "enabled": false
     },
